@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card de Personagem Medieval</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f1e3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        /* Estilo para inputs e botões */
+        input,
+        textarea,
+        button,
+        select,
+        label[for="imageUpload"] {
+            margin: 5px 0;
+            padding: 8px;
+            width: 400px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+            /* Garante que padding não afete a largura total */
+        }
+
+        textarea {
+            height: 80px;
+            resize: none;
+        }
+
+        button,
+        label[for="imageUpload"] {
+            cursor: pointer;
+            background-color: #6b4226;
+            color: white;
+            border: none;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        button:hover,
+        label[for="imageUpload"]:hover {
+            background-color: #4e2f1b;
+        }
+
+        /* Esconde o input de arquivo padrão */
+        input[type="file"] {
+            display: none;
+        }
+
+        .card {
+            width: 750px;
+            background: linear-gradient(145deg, #f3e6c7, #e0cda9);
+            border: 6px solid #5a3319;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            color: #3b1f0b;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            background-image: url('https://i.imgur.com/9KqZkqG.png');
+            /* textura pergaminho */
+            background-size: cover;
+        }
+
+        .card-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .card-header-top h2 {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .flag-icon {
+            width: 50px;
+            height: 30px;
+            border: 1px solid #3b1f0b;
+            border-radius: 4px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .dominio-escola {
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .card-header {
+            display: flex;
+            gap: 20px;
+        }
+
+        .image-placeholder {
+            width: 300px;
+            height: 300px;
+            border: 2px solid #3b1f0b;
+            border-radius: 8px;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: #e0cda9;
+            /* Fundo para caso a imagem não carregue */
+        }
+
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .attributes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .attribute {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .card-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .card-section.full {
+            grid-column: span 2;
+        }
+
+        .card-section {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            word-wrap: break-word;
+        }
+
+        .card-section h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .description {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Lendas de Cruz e Coroas</h1>
+
+    <input type="text" id="name" placeholder="Nome do personagem">
+    <input type="text" id="dominio" placeholder="Domínio">
+    <input type="text" id="escola" placeholder="Escola">
+
+    <select id="flag">
+        <option value="" disabled selected>Escolha uma Nação</option>
+        <optgroup label="Nações Grandes">
+            <option value="/imgs/flags/inglaterra.svg">Inglaterra</option>
+            <option value="/imgs/flags/franca.png">França</option>
+            <option value="/imgs/flags/portugal.png">Reino de Portugal</option>
+            <option value="/imgs/flags/Castela.png">Coroa de Castela e Leão</option>
+            <option value="/imgs/flags/italia.png">Cidades Estados Italianas</option>
+            <option value="/imgs/flags/sacro-imperio.png">Sacro Império Romano</option>
+            <option value="/imgs/flags/bizantino.png">Império Bizantino</option>
+            <option value="/imgs/flags/pontificios.png">Estados Pontifícios</option>
+        </optgroup>
+
+    </select>
+
+    <textarea id="description" placeholder="Descrição do personagem"></textarea>
+
+    <input type="number" id="vigor" placeholder="Vigor" min="0">
+    <input type="number" id="determinacao" placeholder="Determinação" min="0">
+    <input type="number" id="reflexos" placeholder="Reflexos" min="0">
+    <input type="number" id="astucia" placeholder="Astúcia" min="0">
+    <input type="number" id="forca" placeholder="Força" min="0">
+    <input type="number" id="percepcao" placeholder="Percepção" min="0">
+    <input type="number" id="agilidade" placeholder="Agilidade" min="0">
+    <input type="number" id="inteligencia" placeholder="Inteligência" min="0">
+    <input type="number" id="vazio" placeholder="Vazio" min="0">
+
+    <input type="text" id="arma" placeholder="Arma">
+    <input type="text" id="protecao" placeholder="Proteção">
+    <textarea id="tecnica" placeholder="Técnica"></textarea>
+    <textarea id="vantagem" placeholder="Vantagens"></textarea>
+    <textarea id="desvantagem" placeholder="Desvantagens"></textarea>
+
+    <label for="imageUpload">Escolher Imagem do Personagem</label>
+    <input type="file" id="imageUpload" accept="image/*">
+
+    <button id="generateBtn">Gerar Card</button>
+    <button id="downloadBtn">Salvar como PNG</button>
+
+    <div id="cardContainer"></div>
+
+    <script>
+        function gerarCard() {
+            // Coleta de dados dos inputs
+            const name = document.getElementById("name").value || "Nome";
+            const dominio = document.getElementById("dominio").value || "Domínio";
+            const escola = document.getElementById("escola").value || "Escola";
+            const flagUrl = document.getElementById("flag").value || "";
+            const description = document.getElementById("description").value || "Descrição aqui...";
+            const imageFile = document.getElementById("imageUpload").files[0];
+
+            const atributos = [
+                { nome: "Vigor", valor: document.getElementById("vigor").value || 0 },
+                { nome: "Determinação", valor: document.getElementById("determinacao").value || 0 },
+                { nome: "Reflexos", valor: document.getElementById("reflexos").value || 0 },
+                { nome: "Astúcia", valor: document.getElementById("astucia").value || 0 },
+                { nome: "Força", valor: document.getElementById("forca").value || 0 },
+                { nome: "Percepção", valor: document.getElementById("percepcao").value || 0 },
+                { nome: "Agilidade", valor: document.getElementById("agilidade").value || 0 },
+                { nome: "Inteligência", valor: document.getElementById("inteligencia").value || 0 },
+                { nome: "Vazio", valor: document.getElementById("vazio").value || 0 }
+            ];
+
+            const arma = document.getElementById("arma").value || "Nenhuma";
+            const protecao = document.getElementById("protecao").value || "Nenhuma";
+            const tecnica = document.getElementById("tecnica").value || "-";
+            const vantagem = document.getElementById("vantagem").value || "-";
+            const desvantagem = document.getElementById("desvantagem").value || "-";
+
+            // Geração do HTML
+            const atributosHTML = atributos.map(a => `<div class="attribute">${a.nome}: ${a.valor}</div>`).join("");
+            const flagHTML = flagUrl ? `<div class="flag-icon" style="background-image:url('${flagUrl}')"></div>` : "";
+
+            // HTML do card. A imagem começa com um 'src' vazio.
+            const cardHTML = `
+    <div class="card" id="card">
+        <div class="card-header-top">
+            <div class="card-header-left">
+                <h2>${name}</h2>
+                <div class="dominio-escola">${dominio} | ${escola}</div>
+            </div>
+            ${flagHTML}
+        </div>
+        <div class="card-header">
+            <div class="image-placeholder">
+                <img id="characterImage" src="" alt="Personagem">
+            </div>
+            <div class="attributes">${atributosHTML}</div>
+        </div>
+
+        <div class="card-sections">
+            <div class="card-section"><h3>Arma</h3><p>${arma}</p></div>
+            <div class="card-section"><h3>Proteção</h3><p>${protecao}</p></div>
+            <div class="card-section"><h3>Vantagens</h3><p>${vantagem}</p></div>
+            <div class="card-section"><h3>Desvantagens</h3><p>${desvantagem}</p></div>
+            <div class="card-section full"><h3>Técnica</h3><p>${tecnica}</p></div>
+        </div>
+
+        <div class="description"><p>${description}</p></div>
+    </div>
+    `;
+
+            // Insere o card no container
+            document.getElementById("cardContainer").innerHTML = cardHTML;
+
+            // Lógica para carregar a imagem do usuário
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Encontra a imagem que já foi inserida no HTML e define seu 'src'
+                    document.getElementById("characterImage").src = e.target.result;
+                }
+                reader.readAsDataURL(imageFile);
+            }
+        }
+
+        function baixarCard() {
+            const card = document.getElementById("card");
+            if (!card) {
+                alert("Gere o card antes de salvar!");
+                return;
+            }
+
+            // Pega o nome do personagem do campo de input
+            const nomePersonagem = document.getElementById("name").value || "personagem";
+
+            // Cria um nome de arquivo seguro, substituindo espaços por underscores.
+            const nomeArquivo = `card_${nomePersonagem.replace(/\s+/g, '_')}.png`;
+
+            // Opção para permitir que imagens de outras origens sejam renderizadas
+            html2canvas(card, { useCORS: true }).then(canvas => {
+                const link = document.createElement("a");
+
+                // Define o nome dinâmico do arquivo para download
+                link.download = nomeArquivo;
+
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+
+        // Event Listeners - A forma moderna de vincular funções a botões
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('generateBtn').addEventListener('click', gerarCard);
+            document.getElementById('downloadBtn').addEventListener('click', baixarCard);
+        });
+    </script>
+
+</body>
+
+</html>
