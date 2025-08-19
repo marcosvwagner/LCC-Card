@@ -169,7 +169,7 @@ input[type="file"] {
 .attribute-group.single .attribute-values {
     width: calc(50% - 2.5px);
     margin: 0 auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
     padding: 4px 10px;
     border-radius: 8px;
     text-align: center;
@@ -213,19 +213,19 @@ input[type="file"] {
 }
 
 #anel_terra {
-    background-color: rgba(139, 69, 19, 0.4);
+    background-color: rgba(139, 69, 19, 0.2);
 }
 
 #anel_ar {
-    background-color: rgba(135, 206, 250, 0.4);
+    background-color: rgba(135, 206, 250, 0.2);
 }
 
 #anel_fogo {
-    background-color: rgba(178, 34, 34, 0.4);
+    background-color: rgba(178, 34, 34, 0.2);
 }
 
 #anel_agua {
-    background-color: rgba(0, 0, 205, 0.4);
+    background-color: rgba(0, 0, 205, 0.2);
 }
 
 #anel_vazio {
